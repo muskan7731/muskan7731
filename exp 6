@@ -1,0 +1,52 @@
+from collections import deque
+
+def get_successors(state):
+    # state = (position, A, B)
+    # position: 'A' or 'B'
+    # A, B: 'Clean' or 'Dirty'
+    pos, A, B = state
+    successors = []
+
+    if pos == 'A':
+        if A == 'Dirty':
+            successors.append(('A', 'Clean', B))  # Suck dirt at A
+        successors.append(('B', A, B))            # Move to B
+    else:  # pos == 'B'
+        if B == 'Dirty':
+            successors.append(('B', A, 'Clean'))  # Suck dirt at B
+        successors.append(('A', A, B))            # Move to A
+    return successors
+
+
+def vacuum_cleaner_problem(start):
+    goal = ('A', 'Clean', 'Clean')  # goal: both rooms clean
+    queue = deque([(start, [start])])
+    visited = set([start])
+
+    while queue:
+        state, path = queue.popleft()
+        if state[1] == 'Clean' and state[2] == 'Clean':
+            return path  # return solution path
+
+        for succ in get_successors(state):
+            if succ not in visited:
+                visited.add(succ)
+                queue.append((succ, path + [succ]))
+    return None
+
+
+# Example Run
+start_state = ('A', 'Dirty', 'Dirty')  # Start at A, both rooms dirty
+solution = vacuum_cleaner_problem(start_state)
+
+if solution:
+    print("Solution path:")
+    for step in solution:
+        print(step)
+else:
+    print("No solution found.")
+Solution path:
+('A', 'Dirty', 'Dirty')
+('A', 'Clean', 'Dirty')
+('B', 'Clean', 'Dirty')
+('B', 'Clean', 'Clean')
