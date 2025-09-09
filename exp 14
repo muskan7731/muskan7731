@@ -1,0 +1,35 @@
+import math
+
+# Minimax with Alpha-Beta Pruning
+def alpha_beta(depth, node_index, is_max, scores, alpha, beta, max_depth):
+    # Base case: leaf node
+    if depth == max_depth:
+        return scores[node_index]
+
+    if is_max:  # Maximizer's move
+        best = -math.inf
+        for i in range(2):  # 2 children for each node
+            val = alpha_beta(depth + 1, node_index * 2 + i, False, scores, alpha, beta, max_depth)
+            best = max(best, val)
+            alpha = max(alpha, best)
+            if beta <= alpha:  # Prune
+                break
+        return best
+    else:  # Minimizer's move
+        best = math.inf
+        for i in range(2):
+            val = alpha_beta(depth + 1, node_index * 2 + i, True, scores, alpha, beta, max_depth)
+            best = min(best, val)
+            beta = min(beta, best)
+            if beta <= alpha:  # Prune
+                break
+        return best
+
+
+# Example usage
+if __name__ == "__main__":
+    # Example game tree with 8 leaf nodes
+    scores = [3, 5, 6, 9, 1, 2, 0, -1]  
+    max_depth = 3  # 2^3 = 8 leaves
+
+    print("Optimal value:", alpha_beta(0, 0, True, scores, -math.inf, math.inf, max_depth))
