@@ -1,0 +1,35 @@
+from sklearn.tree import DecisionTreeClassifier, export_text
+
+
+
+X = [
+    [0, 0, 0, 0],  # Sunny, Hot, High, False
+    [0, 0, 0, 1],  # Sunny, Hot, High, True
+    [1, 0, 0, 0],  # Overcast, Hot, High, False
+    [2, 1, 0, 0],  # Rain, Mild, High, False
+    [2, 2, 1, 0],  # Rain, Cool, Normal, False
+    [2, 2, 1, 1],  # Rain, Cool, Normal, True
+    [1, 2, 1, 1],  # Overcast, Cool, Normal, True
+    [0, 1, 0, 0],  # Sunny, Mild, High, False
+    [0, 2, 1, 0],  # Sunny, Cool, Normal, False
+    [2, 1, 1, 0],  # Rain, Mild, Normal, False
+    [0, 1, 1, 1],  # Sunny, Mild, Normal, True
+    [1, 1, 0, 1],  # Overcast, Mild, High, True
+    [1, 0, 1, 0],  # Overcast, Hot, Normal, False
+    [2, 1, 0, 1]   # Rain, Mild, High, True
+]
+
+# Labels: Play Tennis? (Yes=1, No=0)
+y = [0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0]
+
+# Create Decision Tree
+clf = DecisionTreeClassifier(criterion="entropy")
+clf.fit(X, y)
+
+# Show decision tree rules
+tree_rules = export_text(clf, feature_names=["Outlook", "Temperature", "Humidity", "Windy"])
+print(tree_rules)
+
+# Test with new data
+test = [[0, 2, 1, 1]]  # Sunny, Cool, Normal, Windy
+print("Prediction (1=Play, 0=Don't Play):", clf.predict(test)[0])
