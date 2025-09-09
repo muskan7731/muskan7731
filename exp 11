@@ -1,0 +1,56 @@
+# Map Coloring Problem using CSP (Backtracking)
+
+# Function to check if the current color assignment is safe
+def is_safe(node, color, assignment, neighbors):
+    for neighbor in neighbors[node]:
+        if neighbor in assignment and assignment[neighbor] == color:
+            return False
+    return True
+
+# Backtracking CSP solver
+def map_coloring(variables, domains, neighbors, assignment={}):
+    # If all variables are assigned, return solution
+    if len(assignment) == len(variables):
+        return assignment
+
+    # Select unassigned variable
+    unassigned = [v for v in variables if v not in assignment]
+    node = unassigned[0]
+
+    # Try each color
+    for color in domains:
+        if is_safe(node, color, assignment, neighbors):
+            assignment[node] = color
+            result = map_coloring(variables, domains, neighbors, assignment)
+            if result:
+                return result
+            assignment.pop(node)  # Backtrack
+
+    return None
+
+
+# Example usage
+if __name__ == "__main__":
+    # Variables (regions on the map)
+    variables = ["A", "B", "C", "D", "E"]
+
+    # Domain (available colors)
+    domains = ["Red", "Green", "Blue"]
+
+    # Neighbors (map adjacency)
+    neighbors = {
+        "A": ["B", "C"],
+        "B": ["A", "C", "D"],
+        "C": ["A", "B", "D", "E"],
+        "D": ["B", "C", "E"],
+        "E": ["C", "D"]
+    }
+
+    solution = map_coloring(variables, domains, neighbors)
+
+    if solution:
+        print("Solution Found:")
+        for region, color in solution.items():
+            print(region, ":", color)
+    else:
+        print("No solution exists.")
