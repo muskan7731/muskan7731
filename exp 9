@@ -1,0 +1,28 @@
+from itertools import permutations
+
+def travelling_salesman(graph, start):
+    # List of all cities except the starting city
+    vertices = list(graph.keys())
+    vertices.remove(start)
+
+    min_path = float("inf")
+    best_route = []
+
+    # Try every possible permutation of cities
+    for perm in permutations(vertices):
+        current_path_cost = 0
+        k = start
+
+        # Calculate cost of this route
+        for j in perm:
+            current_path_cost += graph[k][j]
+            k = j
+        # Add cost to return to starting city
+        current_path_cost += graph[k][start]
+
+        # Update minimum if found a better route
+        if current_path_cost < min_path:
+            mi
+output
+Minimum Cost: 80
+Best Route: A -> B -> D -> C -> A
