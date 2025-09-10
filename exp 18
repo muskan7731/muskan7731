@@ -1,0 +1,28 @@
+% --- Knowledge Base: Database of Name and DOB ---
+
+% Format: dob(Name, day, month, year).
+dob(john, 15, march, 1995).
+dob(mary, 22, july, 1998).
+dob(alex, 3, december, 2000).
+dob(sophia, 9, may, 1992).
+dob(david, 30, january, 1988).
+
+% --- Queries ---
+% 1. Get full DOB of a person
+% ?- dob(mary, D, M, Y).
+% D = 22, M = july, Y = 1998.
+
+% 2. Find who was born in a specific year
+% ?- dob(Name, D, M, 2000).
+% Name = alex, D = 3, M = december.
+
+% 3. List all persons in database
+% ?- dob(Name, D, M, Y).
+
+?- dob(john, D, M, Y).
+D = 15,
+M = march,
+Y = 1995.
+
+?- dob(Name, _, _, 1998).
+Name = mary.
